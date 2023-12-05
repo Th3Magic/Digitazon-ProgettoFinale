@@ -65,6 +65,10 @@ function verifyToken(req, res, next) {
 
 app.use(cors({ origin: 'http://localhost:3000' }))
 
+app.get('/API-key', (req, res) => {
+    res.json(process.env.API_KEY);
+})
+
 app.get('/user-info', verifyToken, (req, res) => {
     res.json(req.user);
 })

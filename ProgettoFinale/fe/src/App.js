@@ -22,6 +22,7 @@ function App() {
   const [error, setError] = useState("")
   const [message, setMessage] = useState("")
   const [shopCart, setShopCart] = useState({})
+  const [apiKey, setApiKey] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
@@ -40,6 +41,12 @@ function App() {
           console.error('Error fetching user data:', error);
         });
     }
+    async function get() {
+      let response = await fetch(`http://localhost:3001/API-key`)
+      let res = await response.json()
+      setApiKey(res)
+    }
+    get()
   }, []);
 
   async function Login(details) {
@@ -146,7 +153,7 @@ function App() {
         <Route path="/Profilo" element={<Profilo user={user} setUser={setUser} logout={logout} />} />
         <Route path="/Login" element={<LoginForm Login={Login} Signup={Signup} error={error} setError={setError} />} />
         <Route path="/:city/:restaurant" element={< StorePage user={user} setMessage={setMessage} shopCart={shopCart} setShopCart={setShopCart} />} />
-        <Route path="/:city" element={<Results message={message} />} />
+        <Route path="/:city" element={<Results message={message} apiKey={apiKey} />} />
         <Route path="/Termini&Condizioni" element={<TerminiCondizioni />} />
         <Route path="/Privacy" element={<Privacy />} />
       </Routes>

@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ResultCard from './ResultCard';
 
-export default function Results({ message }) {
+export default function Results({ message, apiKey }) {
     let { city } = useParams();
     city = city.charAt(0).toUpperCase() + city.slice(1);
     const [loading, setLoading] = useState(false);
     const [allRestaurants, setAllRestaurants] = useState([]);
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
+
     useEffect(() => {
         const loadGoogleMapsScript = () => {
             const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBNxVL9_AE1dACkeKR-TZOQUkDLJ4ZRrEE&libraries=places&callback=initMap`;
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
             script.defer = true;
             script.async = true;
             const onLoadCallback = () => {
