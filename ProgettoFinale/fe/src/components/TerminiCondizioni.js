@@ -1,0 +1,62 @@
+import React from 'react'
+
+export default function TerminiCondizioni() {
+    return (
+        <div className='termini'>
+            <div className='condizioni'>
+                <h2>TERMINI E CONDIZIONI DEL SITO JUST-EAT</h2>
+                <p>
+                    I presenti termini e condizioni (le "Condizioni del Sito") individuano le regole sulla base delle quali la società JUST-EAT Italy S.r.l. (di seguito "noi" o "JUST-EAT") fornisce accesso al sito web https://www.justeat.it e a qualsiasi applicazione mobile JUST-EAT che consenta agli utenti di ordinare prodotti (congiuntamente "Sito"). Si prega di leggere attentamente le presenti Condizioni del Sito prima di ordinare eventuali prodotti dal Sito. L'inoltro di ordini tramite il Sito (ora o in futuro) comporta l'accettazione da parte degli utenti delle presenti Condizioni del Sito che disciplinano l'utilizzo del Sito stesso.
+
+                    JUST-EAT si riserva il diritto di modificare nel tempo le presenti Condizioni del Sito mediante modifica delle previsioni riportate su questa pagina. Nel caso in cui l'utente non accetti le nuove Condizioni del Sito, è tenuto a non utilizzare i servizi offerti dal Sito e a non ordinare prodotti tramite il Sito. Si raccomanda di stampare una copia delle presenti Condizioni del Sito per futura consultazione.
+
+                    L'uso di dati personali trasmessi tramite il Sito è disciplinato dalla Informativa JUST-EAT in materia di Privacy.
+
+                    Per chiarezza, si specifica che qualsiasi riferimento al "Sito" contenuto nelle presenti Condizioni del Sito comprende tutte le versioni attuali o future del sito web https://www.justeat.it nonché qualsiasi applicazione mobile JUST-EAT tramite la quale si abbia accesso al, e si utilizzi il, Sito di JUST-EAT e ciò indipendentemente dal fatto che, sia nell'uno che nell'altro caso, l'accesso avvenga tramite una piattaforma o un dispositivo attualmente esistenti oppure tramite una piattaforma o un dispositivo futuri (ivi inclusi, a titolo esemplificativo e non esaustivo, qualsiasi sito mobile, applicazione mobile, sito affiliato o correlato per l'accesso al, e l'utilizzo del, Sito JUST-EAT eventualmente sviluppato nel corso del tempo).
+
+                    La visita del Sito, anche solo di alcune sue parti, costituisce accettazione da parte degli utenti delle presenti Condizioni del Sito. Gli utenti del Sito che non accettano le presenti Condizioni del Sito sono tenuti a non utilizzare i servizi offerti dal Sito e a non ordinare prodotti tramite il Sito stesso.
+                </p>
+                <h2>1. NORME INTRODUTTIVE E RUOLO DI JUST-EAT</h2>
+                <p>1.1. JUST-EAT è una società di diritto italiano, con sede a Milano, in Via De Castillia, 23 - 20124, C.F. e numero di iscrizione al Registro delle Imprese di Milano n. 07392740960.
+
+                    1.2. Il numero di partita IVA di JUST-EAT è il seguente: 07392740960.
+
+                    1.3. Ordini dei Prodotti: JUST-EAT fornisce agli utenti un sistema per la comunicazione dei loro ordini ("Ordini") di prodotti ("Prodotti") ai ristoranti, negozi e altri esercizi commerciali  ("Locali") che compaiono sul Sito. Il contratto per la fornitura e l'acquisto di Prodotti è concluso tra l'utente e il Locale al quale l'utente inoltra l'Ordine e JUST-EAT concluderà la vendita dei Prodotti per conto ed in qualità di agente dei Locali in tutti i casi. In ogni caso, JUST-EAT non ha alcun obbligo di promuovere la conclusione di contratti tra i Locali e l'utente.</p>
+                <h2>2. ACCESSO AL SITO E CONDIZIONI DEL SITO</h2>
+                <p>2.1. Accesso al Sito: E' possibile avere accesso ad alcune aree del Sito anche senza effettuare un Ordine o senza procedere alla registrazione dei propri dati. La maggior parte delle aree del Sito è accessibile a chiunque.
+
+                    2.2. Accettazione delle Condizioni del Sito: La navigazione in qualunque area del Sito comporta l'accettazione delle Condizioni del Sito. Gli utenti del Sito che non accettano le Condizioni del Sito sono tenuti a non utilizzare i servizi offerti dal Sito e a non ordinare prodotti tramite il Sito stesso.
+
+                    2.3. Modifiche alle Condizioni del Sito: JUST-EAT ha facoltà di modificare le presente Condizioni del Sito in qualsiasi momento. L'utente è pertanto tenuto a controllare periodicamente le Condizioni del Sito in vigore al momento dell'effettuazione dell'Ordine dei prodotti poiché la versione pubblicata sul Sito a tale data troverà applicazione per gli utenti del Sito. Gli utenti del Sito sono tenuti al rispetto delle regole in vigore al momento in cui effettuano un Ordine tramite JUST-EAT.
+
+                    2.4. Responsabilità: Spetta ai visitatori e utenti del Sito predisporre quanto necessario per avere accesso al Sito stesso. Inoltre, i visitatori e utenti del Sito sono tenuti a garantire che tutti coloro che hanno accesso al Sito tramite il loro account e la loro connessione ad Internet siano a conoscenza delle presenti Condizioni del Sito e le rispettino.</p>
+                <h2>3. STATUS DELL'UTENTE DEL SITO</h2>
+                <p>3.1. Capacità giuridica ed età: Effettuando un Ordine tramite il Sito, l'utente garantisce:
+
+                    3.1.1. di aver la capacità di agire e concludere contratti giuridicamente vincolanti con i Locali; e
+
+                    3.1.2. di avere compiuto 18 anni.
+
+                    3.2. Tu confermi e ti impegni, qualora tu abbia una specifica allergia o intolleranza, a contattare direttamente il Locale per verificare che il prodotto sia indicato alle tue esigenze, prima di effettuare l'ordine direttamente con il Locale stesso.
+
+                    3.3 Alcolici, prodotti a base di tabacco e altri articoli con limitazioni di età ("Articoli con limitazioni di età"):
+
+                    3.3.1 L'utente accetta e dichiara che costituisce reato per qualsiasi soggetto al di sotto dell’età minima legale acquistare, o tentare di acquistare, alcuni Articoli con limitazioni di età o per qualsiasi soggetto acquistare, o tentare di acquistare, alcuni Articoli con limitazioni di età per conto di un soggetto al di sotto dell’età minima legale.
+
+                    3.3.2 Qualora l'Ordine dell'utente includa qualsiasi Articolo con limitazioni di età, all'utente sarà richiesto di fornire prova della propria età al ricevimento o alla consegna del suo Ordine. Se l'utente non è in grado di provare il requisito dell’età  minima legale a discrezione del Locale prescelto, o laddove il Locale ritenga ragionevolmente che gli Articoli con limitazioni di età ordinati dall'utente siano stati acquistati dall'utente per conto di una persona al di sotto dell’età minima legale, il Locale si riserva il diritto di non completare la consegna all'utente degli Articoli con limitazioni di età.</p>
+                <h2>4. MODALITÀ DI INVIO E DI ELABORAZIONE DELL'ORDINE</h2>
+                <p>4.1. Compilazione dell'Ordine: Dopo aver selezionato i prodotti che si desidera ordinare dal dal Locale prescelto ed aver fornito le informazioni richieste, l'utente ha facoltà di effettuare l'Ordine cliccando sul, o selezionando il, pulsante "paga ora" o "procedi al pagamento" o altro simile pulsante. Si ricorda che è importante controllare tutte le informazioni immesse e correggere eventuali errori prima di cliccare sul pulsante o di selezionarlo poiché, dopo averlo fatto, l'utente concluderà un contratto di vendita con il Locale e non sarà più possibile correggere eventuali errori o recedere dall'Ordine (fatto salvo quanto previsto nel paragrafo 4.2 di seguito). Scegliendo di completare l'Ordine come ospite, l'Utente accetta che JUST-EAT crei per l'Utente un account ospite temporaneo di JUST-EAT che, se non diversamente indicato nei presenti Termini del Sito, sarà accessibile solo (a) dal dispositivo utilizzato per effettuare l'Ordine; e (b) per un periodo massimo di dodici mesi dalla data dell'Ordine.  L'accesso dell'utente all'account ospite temporaneo scadrà alla "Data di scadenza", che sarà la prima tra (i) la data che cade sei mesi dopo la data dell'ultimo accesso all'account ospite temporaneo; (ii) la data che cade dodici mesi dopo la data di creazione dell'account ospite temporaneo; e (iii) la data in cui l'utente effettua il logout dall'account ospite temporaneo o cancella la cache sul dispositivo utilizzato al momento della creazione dell'account ospite temporaneo.
+
+                    4.2. Modifica o recesso dall'Ordine: Ai sensi dell'art. 59 del Codice del Consumo, il diritto di recesso è escluso in quanto trattasi di prodotti lavorati su ordinazione e soggetti a rapido deterioramento. Una volta che l'Ordine è stato inoltrato l'utente conclude un contratto di vendita di prodotti con il Locale e, pertanto, non può modificare o recedere dall'Ordine e non ha diritto ad alcun rimborso (si prega di consultare gli articoli 4.4 e 5.8 per ulteriori informazioni relative al procedimento applicabile al rifiuto di esecuzione degli Ordini e al rimborso del pagamento). Tuttavia, ove desideri comunque tentare di modificare o recedere dall'Ordine, l'utente può rivolgersi al Servizio Clienti, con le modalità descritte all'articolo 6.3, il quale potrà tentare di contattare il Locale al fine di comunicargli la richiesta dell'utente. L'utente riconosce espressamente che non vi è alcun obbligo né assicurazione, tuttavia, riguardo al fatto che il Servizio Clienti sarà in grado di contattare il Locale o che il Locale accetterà le richieste di modifica o recesso dell'utente.
+
+                    4.3. Autorizzazione al pagamento: In caso di mancata autorizzazione relativa ad un qualsiasi pagamento, l'Ordine non viene elaborato o non viene inviato al Locale interessato.
+
+                    4.4. Elaborazione dell'Ordine e rifiuto di esecuzione degli Ordini da parte del Locale: Alla ricezione dell'Ordine, JUST-EAT trasmette lo stesso al Locale interessato e notifica all'utente, tramite e-mail, che l'Ordine è stato ricevuto ed è in corso di elaborazione. Si specifica che qualsiasi pagina di conferma che l'utente possa visualizzare sul Sito e qualsiasi conferma di Ordine che l'utente stesso riceva tramite e-mail confermano ulteriormente la avvenuta conclusione del contratto di vendita di prodotti con un Locale, ma ciò non implica necessariamente che i prodotti ordinati saranno consegnati dal Locale. JUST-EAT incoraggia fermamente tutti i Locali, per conto dei quali opera come mandatario, a eseguire tutti gli Ordini e a comunicare tempestivamente eventuali rifiuti di esecuzione degli Ordini e comunica all'utente (generalmente tramite e-mail), non appena sia ragionevolmente possibile, ogni eventuale rifiuto di esecuzione dell'Ordine da parte del Locale. In ogni caso, JUST-EAT non può escludere che i Locali rifiutino di eseguire gli Ordini in qualsiasi momento per il fatto di essere eccessivamente impegnati, a causa delle condizioni atmosferiche o per qualsiasi altra ragione. In tali casi, qualsiasi pagamento già effettuato in relazione all'Ordine sarà restituito all'utente ai sensi del successivo articolo 5.7.
+
+                    4.5. Consegna dell'Ordine: I tempi stimati per le consegne e i ritiri sono forniti dai Locali e sono solo indicativi. JUST-EAT e i Locali non garantiscono che gli Ordini verranno consegnati o saranno disponibili per il ritiro entro i tempi stimati. Scegliendo di avere l’ordine consegnato sta confermando che sarà presente per riceverlo presso l’indirizzo scelto. Se non sara’ presente all'indirizzo di consegna nell’orario indicato e saremo noi a gestirla (invece che il Locale stesso), ci impegneremo a compiere ogni ragionevole sforzo per contattarla e determinare dove lasciare l’ordine. Se non sarà possibile mettersi in contatto con lei potremmo lasciare la consegna in un luogo idoneo vicino all’indirizzo richiesto. Non ci assumiamo responsabilità dell'ordine (incluso lo stato o sicurezza del contenuto quando lo troverete) una volta consegnato. Da notare che qualora lei non fosse presente ed in caso fosse il Locale stesso ad effettuare la consegna, quest'ultimo deciderà se lasciare l'ordine fuori l’indirizzo indicato o meno.
+
+                    4.6. Agente commerciale: a scanso di equivoci, qualsiasi Ordine elaborato da JUST-EAT attraverso il Sito web è elaborato da JUST-EAT nella sua qualità di agente del relativo Locale.</p>
+            </div>
+        </div>
+    )
+}
