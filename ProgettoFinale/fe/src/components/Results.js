@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ResultCard from './ResultCard';
 
-export default function Results({ message, apiKey }) {
+export default function Results({ message, apiKey, userLocation }) {
     let { city } = useParams();
     city = city.charAt(0).toUpperCase() + city.slice(1);
     const [loading, setLoading] = useState(false);
@@ -63,7 +63,7 @@ export default function Results({ message, apiKey }) {
                 <ul>
                     {filteredRestaurants.map((restaurant, index) => (
                         <li key={`${restaurant.place_id}-${index}`}>
-                            <ResultCard result={restaurant} city={city} />
+                            <ResultCard result={restaurant} city={city} userLocation={userLocation} />
                         </li>
                     ))}
                 </ul>

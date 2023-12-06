@@ -23,6 +23,7 @@ function App() {
   const [message, setMessage] = useState("")
   const [shopCart, setShopCart] = useState({})
   const [apiKey, setApiKey] = useState("");
+  const [userLocation, setUserLocation] = useState([])
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
@@ -48,6 +49,22 @@ function App() {
     }
     get()
   }, []);
+
+  useEffect(() => {
+    if (user.name) {
+      let parts = user.address.split(', ');
+      let street = parts[0];
+      let number = parts[1]
+      let formattedAddress = number + '+' + street.replace(' ', '+');
+      async function getLatLng() {
+        let response = await fetch(`https://geocode.maps.co/search?q=${formattedAddress}+Milano`)
+        let res = await response.json()
+        let latlng = res[0]
+        setUserLocation([latlng.lat, latlng.lon])
+      }
+      getLatLng()
+    }
+  }, [user.name])
 
   async function Login(details) {
     const response = await fetch('http://localhost:3001/login', {
@@ -136,6 +153,7 @@ function App() {
       localStorage.removeItem('jwtToken');
       setUser({ name: "", email: "" })
       setShopCart({})
+      setUserLocation([])
       console.log("User logout correctly")
       navigate("/")
     }
@@ -153,7 +171,7 @@ function App() {
         <Route path="/Profilo" element={<Profilo user={user} setUser={setUser} logout={logout} />} />
         <Route path="/Login" element={<LoginForm Login={Login} Signup={Signup} error={error} setError={setError} />} />
         <Route path="/:city/:restaurant" element={< StorePage user={user} setMessage={setMessage} shopCart={shopCart} setShopCart={setShopCart} />} />
-        <Route path="/:city" element={<Results message={message} apiKey={apiKey} />} />
+        <Route path="/:city" element={<Results message={message} apiKey={apiKey} userLocation={userLocation} />} />
         <Route path="/Termini&Condizioni" element={<TerminiCondizioni />} />
         <Route path="/Privacy" element={<Privacy />} />
       </Routes>

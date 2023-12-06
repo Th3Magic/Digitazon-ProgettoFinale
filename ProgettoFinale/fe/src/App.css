@@ -407,7 +407,6 @@ html,body
   margin-bottom: 20px;
   margin-left: 30px;
   padding: 10px;
-  gap: 4px;
 }
 
 .result-item img {
@@ -440,7 +439,6 @@ html,body
   font-family: cursive,Helvetica,Arial,sans-serif;
   font-size: 14px;
   font-weight: 700;
-  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -461,6 +459,32 @@ html,body
   white-space: nowrap;
   white-space: nowrap;
   max-width: 240px;
+  margin-bottom: 4px;
+}
+
+.delivery-time {
+  margin-top: 3px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-info{
+  display: flex;
+  flex-direction: column;
+}
+
+.result-info img {
+  width: 24px;
+  height: 24px;
+}
+
+.result-info img:hover {
+  cursor:auto;
+  width: 24px;
+  height: 24px;
+  opacity: 100%;
 }
 
 /* LOGIN */
