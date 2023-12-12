@@ -10,7 +10,8 @@ export default function ShopProfile({ user, setUser, logout }) {
     const [modfiedDesc, setModifiedDesc] = useState("")
     const [modfiedPrice, setModifiedPrice] = useState("")
     const [isAddToMenuDialogOpen, setAddToMenuDialogOpen] = useState(false);
-    const [addingCategory, setAddingCategory] = useState("");
+    const [addingCategory, setAddingCategory] = useState("")
+    const token = localStorage.getItem('jwtToken')
 
     function showMenu() {
         let res = []
@@ -31,9 +32,11 @@ export default function ShopProfile({ user, setUser, logout }) {
     async function deleteShop() {
 
         let res = await fetch(`http://localhost:3001/shops/${user.city}/${user.email}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                Authorization: token,
+            }
         })
-        console.log(res.status)
         res = await res.json()
         if (res.error) {
             console.log(res.msg)
@@ -49,7 +52,7 @@ export default function ShopProfile({ user, setUser, logout }) {
         }
         let res = await fetch(`http://localhost:3001/shops/${user.city}/${user.email}/menu`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Authorization: token },
             body: JSON.stringify({ menu: newMenu })
         })
         console.log(res.status)
@@ -68,10 +71,9 @@ export default function ShopProfile({ user, setUser, logout }) {
         newMenu[key].splice(index, 1)
         let res = await fetch(`http://localhost:3001/shops/${user.city}/${user.email}/menu`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Authorization: token },
             body: JSON.stringify({ menu: newMenu })
         })
-        console.log(res.status)
         res = await res.json()
         if (res.error) {
             console.log(res.msg)
@@ -96,10 +98,9 @@ export default function ShopProfile({ user, setUser, logout }) {
         newMenu[addingCategory].push(itemToAdd)
         let res = await fetch(`http://localhost:3001/shops/${user.city}/${user.email}/menu`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Authorization: token },
             body: JSON.stringify({ menu: newMenu })
         })
-        console.log(res.status)
         res = await res.json()
         if (res.error) {
             console.log(res.msg)
@@ -124,7 +125,7 @@ export default function ShopProfile({ user, setUser, logout }) {
                             <h4>Email</h4>
                             <input className="profile-input" type="text" value={user.email} readOnly />
                             <h4>Indirizzo</h4>
-                            <input className="profile-input" type="text" value={`${user.address},${user.city}`} readOnly />
+                            <input className="profile-input" type="text" value={`${user.address}, ${user.city}`} readOnly />
                             <br />
                             <p className='error'>Per modificare questi dati contatta il supporto</p>
                         </div>

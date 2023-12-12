@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function StorePage({ user, setMessage, shopCart, setShopCart }) {
+export default function StorePage({ user, setMessage, shopCart, setShopCart, apiKey }) {
 
     const { city, restaurant } = useParams()
     const [store, setStore] = useState({})
     const [showMenu, setShowMenu] = useState(true);
     const [menuKeys, setMenuKeys] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
+    const [mapSrc, setMapSrc] = useState("")
     const [msg, setMsg] = useState("")
     const navigate = useNavigate()
 
@@ -22,6 +23,8 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart }) {
             } else {
                 setStore(res)
                 setMenuKeys(Object.keys(res.menu))
+                let finalAddress = res.address.replaceAll(" ", "%20") + ",%20" + city + ", Italy"
+                setMapSrc(finalAddress)
             }
         }
         get()
@@ -30,7 +33,7 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart }) {
     useEffect(() => {
         if (shopCart[store.name] && shopCart[store.name].length > 0) {
             let newTotalPrice = shopCart[store.name].reduce((acc, curr) => acc + curr.price * curr.quantity, 0)
-            setTotalPrice(newTotalPrice)
+            setTotalPrice(newTotalPrice.toFixed(2))
         } else {
             setTotalPrice(0)
         }
@@ -100,6 +103,8 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart }) {
         }
     }
 
+    console.log(mapSrc)
+
     return (
         <>
             {store && (
@@ -108,7 +113,6 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart }) {
                         <div className='arrow' onClick={() => navigate(`/${city}`)}></div>
                         <div className='store-box'>
                             <h1>{store.name}</h1>
-                            {/* Rating */}
                             <span>{store.address}, {store.city}</span>
                         </div>
                         <div className='order-box'>
@@ -181,6 +185,18 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart }) {
                             )
                         ) : (
                             <div className='info-menu'>
+                                <h2>DOVE SIAMO</h2>
+                                <div>
+                                    <iframe
+                                        width="550"
+                                        height="380"
+                                        loading="lazy"
+                                        style={{ border: 0 }}
+                                        title={store.name}
+                                        referrerpolicy="no-referrer-when-downgrade"
+                                        src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${mapSrc}`}>
+                                    </iframe>
+                                </div>
                                 <h2>RECENSIONI</h2>
                                 {store.reviews.length > 0 &&
                                     <div>

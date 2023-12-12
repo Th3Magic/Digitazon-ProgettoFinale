@@ -60,6 +60,10 @@ html,body
   width: 90%;
 }
 
+.empty {
+  display: none;
+}
+
 .logout:hover{
   cursor: pointer;
   font-size: 18px;
@@ -904,7 +908,43 @@ input[type="checkbox"] {
 }
 
 .add-menu-btn {
-  margin-bottom: 30px;
+  color: black;
+  display: inline-block;
+  width: auto;
+  height: 40px;
+  overflow: hidden;
+  margin: 24px;
+  font-size: 15px;
+  z-index: 1;
+  border: 1px solid rgba(0, 0, 0, 0.262);
+  border-radius: 10px;
+  position: relative;
+}
+
+.add-menu-btn::before {
+  position: absolute;
+  content: "";
+  background: orange;
+  width: 210px;
+  height: 200px;
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.add-menu-btn:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.add-menu-btn:before {
+  top: 100%;
+  left: 100%;
+  transition: .3s all;
+}
+
+.add-menu-btn:hover::before {
+  top: -30px;
+  left: -30px;
 }
 
 .add-to-menu-modal {

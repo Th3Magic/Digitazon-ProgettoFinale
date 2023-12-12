@@ -7,6 +7,7 @@ export default function UserProfile({ user, logout }) {
     const [preferences, setPreferences] = useState({});
     const [review, setReview] = useState("")
     const [msg, setMsg] = useState("")
+    const token = localStorage.getItem('jwtToken')
 
     useEffect(() => {
         if (user && user.contacts)
@@ -36,7 +37,7 @@ export default function UserProfile({ user, logout }) {
 
         let res = await fetch(`http://localhost:3001/users/${user.email}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Authorization: token },
             body: JSON.stringify({
                 name: modifiedName,
                 phone: modifiedPhone,
@@ -53,7 +54,10 @@ export default function UserProfile({ user, logout }) {
     async function deleteUser() {
 
         let res = await fetch(`http://localhost:3001/users/${user.email}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                Authorization: token,
+            }
         })
         console.log(res.status)
         res = await res.json()
@@ -67,10 +71,9 @@ export default function UserProfile({ user, logout }) {
 
         let res = await fetch(`http://localhost:3001/orders/${orderId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', Authorization: token },
             body: JSON.stringify({ [orderId]: review, name: user.name })
         })
-        console.log(res.status)
         res = await res.json()
         if (res.error) {
             console.log(res.msg)
@@ -142,7 +145,7 @@ export default function UserProfile({ user, logout }) {
                     </li>
                     {selectedButton === 3 &&
                         <div>
-                            {user.addresses ? user.addresses.map(address => <input className="profile-input" type="text" value={address} readOnly />) : <p><strong>Non hai alcun indirizzo di consegna inserito</strong></p>}
+                            <p>{user.address}, {user.city}</p>
                         </div>
                     }
                     <li>

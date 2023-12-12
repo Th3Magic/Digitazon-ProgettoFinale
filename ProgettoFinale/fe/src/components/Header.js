@@ -6,15 +6,18 @@ export default function Header({ user, logout, setError, setMessage }) {
 
     const navigate = useNavigate();
 
+    function justEat() {
+        if (!user.type) {
+            navigate("/")
+            setError("")
+            setMessage("")
+        }
+    }
+
     return (
         <div className="header">
             <div className='logo'>
-                <img src={logo} alt="Just Eat" onClick={() => {
-                    navigate("/")
-                    setError("")
-                    setMessage("")
-                }
-                } />
+                <img src={logo} alt="Just Eat" onClick={justEat} />
             </div>
             <div className='nav'>
                 <button className='header-btn' onClick={() => {
@@ -23,12 +26,14 @@ export default function Header({ user, logout, setError, setMessage }) {
                     setMessage("")
                 }
                 }>Chi Siamo</button>
-                <button className='header-btn' onClick={() => {
+                {user.type ? <div className='empty'>
+
+                </div> : <button className='header-btn' onClick={() => {
                     navigate("/LavoraConNoi")
                     setError("")
                     setMessage("")
                 }
-                }>Lavora con noi</button>
+                }>Lavora con noi</button>}
                 {user.name ?
                     <div>
                         <button className='header-btn' onClick={() => navigate("/Profilo")}>{user.name}</button>

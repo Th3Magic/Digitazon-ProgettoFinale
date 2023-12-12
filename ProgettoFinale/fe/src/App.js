@@ -22,7 +22,7 @@ function App() {
   const [error, setError] = useState("")
   const [message, setMessage] = useState("")
   const [shopCart, setShopCart] = useState({})
-  const [apiKey, setApiKey] = useState("");
+  const [apiKey, setApiKey] = useState("")
   const [userLocation, setUserLocation] = useState([])
 
   useEffect(() => {
@@ -51,7 +51,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (user.name) {
+    if (user.address) {
       let parts = user.address.split(', ');
       let street = parts[0];
       let number = parts[1]
@@ -64,7 +64,7 @@ function App() {
       }
       getLatLng()
     }
-  }, [user.name])
+  }, [user.address])
 
   async function Login(details) {
     const response = await fetch('http://localhost:3001/login', {
@@ -110,7 +110,6 @@ function App() {
     if (details.type) {
       const response = await fetch('http://localhost:3001/signup', {
         method: 'POST',
-        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -170,7 +169,7 @@ function App() {
         <Route path="/Faq" element={<Faq />} />
         <Route path="/Profilo" element={<Profilo user={user} setUser={setUser} logout={logout} />} />
         <Route path="/Login" element={<LoginForm Login={Login} Signup={Signup} error={error} setError={setError} />} />
-        <Route path="/:city/:restaurant" element={< StorePage user={user} setMessage={setMessage} shopCart={shopCart} setShopCart={setShopCart} />} />
+        <Route path="/:city/:restaurant" element={< StorePage user={user} setMessage={setMessage} shopCart={shopCart} setShopCart={setShopCart} apiKey={apiKey} />} />
         <Route path="/:city" element={<Results message={message} apiKey={apiKey} userLocation={userLocation} />} />
         <Route path="/Termini&Condizioni" element={<TerminiCondizioni />} />
         <Route path="/Privacy" element={<Privacy />} />

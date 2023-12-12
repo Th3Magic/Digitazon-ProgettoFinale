@@ -39,8 +39,8 @@ async function userAlreadyExists(req, res, next) {
 }
 
 function fieldsNotCompiled(req, res, next) {
-    const { name, email, password } = req.body
-    if (!name || !email || !password) {
+    const { name, email, password, city, address } = req.body
+    if (!name || !email || !password || !city || !address) {
         return res.status(422).json({ error: true, msg: 'All fields are required' })
     } else {
         next()
@@ -131,41 +131,30 @@ app.post('/logout', (req, res) => {
     }
 })
 
+// Endpoint per ottenere un utente
+app.get('/users/:user', verifyToken, async (req, res) => {
+    const user = req.params.user
+    let result = await select("Users", { email: user })
+    if (result) {
+        res.status(200).json(result)
+    } else {
+        res.status(404).json({ error: true, msg: 'User not found' })
+    }
+})
+
 // Endpoint per la modifica dati utente
-app.put('/users/:user', async (req, res) => {
+app.put('/users/:user', verifyToken, async (req, res) => {
     const user = req.params.user
     const modifier = req.body
-    const userIsLogged = loggedInUsers.find(u => u.email === user)
-    if (userIsLogged) {
-        await update("Users", { email: user }, modifier)
-        res.status(200).json({ msg: 'Modified successfully' })
-    } else {
-        res.status(401).json({ error: true, msg: 'User must be logged' })
-    }
+    await update("Users", { email: user }, modifier)
+    res.status(200).json({ msg: 'Modified successfully' })
 })
 
 // Endpoint per l'eliminazione di un utente
-app.delete('/users/:user', async (req, res) => {
+app.delete('/users/:user', verifyToken, async (req, res) => {
     const user = req.params.user
-    const userIsLogged = loggedInUsers.find(u => u.email === user)
-    if (userIsLogged) {
-        await del("Users", { email: user })
-        res.status(200).json({ msg: 'Deleted successfully' })
-    } else {
-        res.status(401).json({ error: true, msg: 'User must be logged' })
-    }
-})
-
-// Endpoint per ottenere un utente
-app.get('/users/:user', async (req, res) => {
-    const user = req.params.user
-    const userIsLogged = loggedInUsers.find(u => u.email === user)
-    if (userIsLogged) {
-        let result = await select("Users", { email: user })
-        res.status(200).json(result)
-    } else {
-        res.status(401).json({ error: true, msg: 'User must be logged' })
-    }
+    await del("Users", { email: user })
+    res.status(200).json({ msg: 'Deleted successfully' })
 })
 
 // Endpoint per ottenere uno shop
@@ -182,49 +171,34 @@ app.get('/shops/:city/:shop', async (req, res) => {
 })
 
 // Endpoint per l'eliminazione di uno shop
-app.delete('/shops/:city/:shop', async (req, res) => {
+app.delete('/shops/:city/:shop', verifyToken, async (req, res) => {
     const city = req.params.city
     const shop = req.params.shop
-    const userIsLogged = loggedInUsers.find(u => u.email === shop)
-    if (userIsLogged) {
-        await del("Shops", { email: shop, city: city })
-        res.status(200).json({ msg: 'Deleted successfully' })
-    } else {
-        res.status(401).json({ error: true, msg: 'User must be logged' })
-    }
+    await del("Shops", { email: shop, city: city })
+    res.status(200).json({ msg: 'Deleted successfully' })
 })
 
 // Endpoint per la modifica del menu di uno shop
-app.put('/shops/:city/:shop/menu', async (req, res) => {
+app.put('/shops/:city/:shop/menu', verifyToken, async (req, res) => {
     const city = req.params.city
     const shop = req.params.shop
     const item = req.body
-    const userIsLogged = loggedInUsers.find(u => u.email === shop)
-    if (userIsLogged) {
-        await updateItem({ email: shop, city: city }, item)
-        res.status(200).json({ msg: 'Modified successfully' })
-    } else {
-        res.status(401).json({ error: true, msg: 'User must be logged' })
-    }
+    await updateItem({ email: shop, city: city }, item)
+    res.status(200).json({ msg: 'Modified successfully' })
 })
 
 // Endpoint per l'inserimento di un ordine
-app.post('/orders/:city/:shop', async (req, res) => {
+app.post('/orders/:city/:shop', verifyToken, async (req, res) => {
     const city = req.params.city
     const shop = req.params.shop
     const order = req.body
     const date = getDate()
-    const userIsLogged = loggedInUsers.find(u => u.email === order.user)
-    if (userIsLogged) {
-        await updateOrder({ shop: shop, city: city, user: order.user }, { date: date, ...order })
-        res.status(200).json({ msg: 'Order added successfully' })
-    } else {
-        res.status(400).json({ error: true, msg: "Couldn't complete the order" })
-    }
+    await updateOrder({ shop: shop, city: city, user: order.user }, { date: date, ...order })
+    res.status(200).json({ msg: 'Order added successfully' })
 })
 
 // Endpoint per l'inserimento di una review'
-app.put('/orders/:order', async (req, res) => {
+app.put('/orders/:order', verifyToken, async (req, res) => {
     const orderId = req.params.order
     const review = req.body
     await updateReview(orderId, review)

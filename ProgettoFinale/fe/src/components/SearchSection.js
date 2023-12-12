@@ -7,6 +7,9 @@ export default function SearchSection({ user }) {
     const [city, setCity] = useState("")
 
     useEffect(() => {
+        if (user.type) {
+            navigate('/Profilo')
+        }
         if (user.name) {
             setCity(user.city)
         }

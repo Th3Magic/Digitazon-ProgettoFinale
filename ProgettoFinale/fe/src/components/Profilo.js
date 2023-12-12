@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 export default function Profilo({ user, setUser, logout }) {
 
     const navigate = useNavigate()
+    const token = localStorage.getItem('jwtToken')
 
     useEffect(() => {
         if (!user.name) {
@@ -28,7 +29,12 @@ export default function Profilo({ user, setUser, logout }) {
             get()
         } else {
             async function get() {
-                let response = await fetch(`http://localhost:3001/users/${user.email}`)
+                let response = await fetch(`http://localhost:3001/users/${user.email}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: token,
+                    }
+                })
                 let res = await response.json()
                 if (res.error) {
                     console.log(res.msg)
