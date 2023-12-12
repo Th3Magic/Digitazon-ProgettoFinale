@@ -294,40 +294,75 @@ html,body
   text-align:center;
   height: auto;
   margin-top: auto;
-  }
+}
   
-  .footer .row{
+.footer .row{
   width:100vw;
   padding: 10px;
   margin-bottom: 10px;
-  margin-top: 5px;
   color:gray;
   font-size: 15px;
-  }
+}
   
-  .footer .row span{
+.footer .row span{
   text-decoration:none;
   color:gray;
   transition:0.5s;
-  }
+}
   
-  .footer .row span:hover{
+.footer .row span:hover{
   color:#fff;
   cursor: pointer;
-  }
+}
   
-  .footer .row ul{
+.footer .row ul{
   width:100%;
-  }
+}
   
-  .footer .row ul li{
+.footer .row ul li{
   display:inline-block;
   margin:0px 30px;
-  }
+}
 
-  li a{
-    text-decoration: none;
+li a{
+  text-decoration: none;
+}
+
+.parent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+  
+.child {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  border-radius: 50%;
+  margin: 0 5px;
   }
+  
+.child button {
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+}
+  
+ .child button:hover {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-11px);
+  border-radius: 50%;
+  cursor: pointer;
+}
 
   /* SIDEBAR */
 
@@ -523,7 +558,7 @@ form:after {
   right: -5px;
   bottom: -5px;
   z-index: 1;
-  background-image: linear-gradient(to bottom right, #FFCE00, #FE4880);
+  background-image: linear-gradient(to bottom right, #FFCE00, rgb(255, 145, 0));
 }
 
 form .form-inner {
@@ -557,7 +592,7 @@ form .form-inner .form-group {
 }
 
 .form-inner .form-group:focus-within label {
-  color: #FE4880
+  color: orange
 }
 
 form .form-inner .form-group input {
@@ -578,7 +613,7 @@ form .form-inner input[type="submit"] {
   display: inline block;
   padding: 10px 15px;
   border-radius: 8px;
-  background-image: linear-gradient(to right, #FFCE00 50%, #FFCE00 50%, #FE4880);
+  background-image: linear-gradient(to right, #FFCE00 50%, #FFCE00 50%, #ff8800);
   background-size: 200%;
   background-position: 0%;
   transition: 0.4s;
@@ -590,7 +625,7 @@ form .form-inner input[type="submit"] {
 
 form .form-inner input[type="submit"]:hover {
   background-position: 100% 0%;
-  border: 1px groove rgb(0, 0, 0);
+  border: 1px groove rgba(155, 155, 155, 0.517);
 }
 
 .error {
@@ -1475,3 +1510,17 @@ font-weight: 600;
   background-color: rgb(244, 179, 57);
   transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
  }
+
+ @media only screen and (min-width: 2000px) {
+  .store-box {
+    margin-left: 800px;
+  }
+
+  .menu-info {
+    margin-left: 1050px;
+  }
+
+  .content{
+    margin-left: 950px;
+  }
+}
