@@ -5,6 +5,7 @@ export default function UserProfile({ user, logout }) {
     const [modifiedName, setModifiedName] = useState(user.name)
     const [modifiedPhone, setModifiedPhone] = useState("")
     const [preferences, setPreferences] = useState({});
+    const [rating, setRating] = useState(0);
     const [review, setReview] = useState("")
     const [msg, setMsg] = useState("")
     const token = localStorage.getItem('jwtToken')
@@ -32,6 +33,9 @@ export default function UserProfile({ user, logout }) {
         }));
     };
 
+    const handleRatingChange = (newRating) => {
+        setRating(newRating === rating ? 0 : newRating);
+    };
 
     async function modifyUser() {
 
@@ -72,7 +76,7 @@ export default function UserProfile({ user, logout }) {
         let res = await fetch(`http://localhost:3001/orders/${orderId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', Authorization: token },
-            body: JSON.stringify({ [orderId]: review, name: user.name })
+            body: JSON.stringify({ [orderId]: review, name: user.name, rating })
         })
         res = await res.json()
         if (res.error) {
@@ -132,6 +136,17 @@ export default function UserProfile({ user, logout }) {
                                             <div className='review'>
                                                 <p>Lascia una recensione</p>
                                                 <textarea name="review" cols="50" rows="10" onChange={(e) => setReview(e.target.value)}></textarea>
+                                                <div className="rating-stars">
+                                                    {[1, 2, 3, 4, 5].map((star) => (
+                                                        <span
+                                                            key={star}
+                                                            className={`star ${rating >= star ? 'filled' : ''}`}
+                                                            onClick={() => handleRatingChange(star)}
+                                                        >
+                                                            ★
+                                                        </span>
+                                                    ))}
+                                                </div>
                                                 <button className='review-btn' onClick={() => addReview(order._id)}>Invia recensione</button>
                                                 {msg && <p>{msg}</p>}
                                             </div>}
@@ -141,7 +156,7 @@ export default function UserProfile({ user, logout }) {
                         </div>
                     }
                     <li>
-                        <button onClick={() => handleButtonClick(3)} className='profile-btn'>Indirizzi di consegna</button>
+                        <button onClick={() => handleButtonClick(3)} className='profile-btn'>Indirizzo di consegna</button>
                     </li>
                     {selectedButton === 3 &&
                         <div>

@@ -152,7 +152,12 @@ export default function ShopProfile({ user, setUser, logout }) {
                                         <br />
                                         {user.reviews.find(review => review[order._id] !== undefined) &&
                                             <div className='existing-review'>
-                                                <h4>Recensione</h4>
+                                                <h4>Recensione del cliente</h4>
+                                                <span className='review-stars'>{Array(Math.floor(user.reviews.find(review => review[order._id] !== undefined).rating))
+                                                    .fill()
+                                                    .map((_, i) => (
+                                                        <p>⭐</p>
+                                                    ))}</span>
                                                 <p>{user.reviews.find(review => review[order._id] !== undefined)[order._id]}</p>
                                             </div>}
                                     </div>

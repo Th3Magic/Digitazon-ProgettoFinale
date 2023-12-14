@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
-export default function SearchSection({ user }) {
+export default function SearchSection({ user, message }) {
 
     const navigate = useNavigate();
     const [city, setCity] = useState("")
@@ -28,6 +28,7 @@ export default function SearchSection({ user }) {
                         <span className="btn-txt">Cerca</span>
                     </button>
                 </div>
+                {message && <p className='error'>{message}</p>}
             </div>
         </div>
     )

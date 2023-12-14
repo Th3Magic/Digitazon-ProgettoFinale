@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ResultCard from './ResultCard';
 
-export default function Results({ message, apiKey, userLocation }) {
+export default function Results({ message, setMessage, apiKey, userLocation }) {
     let { city } = useParams();
     city = city.charAt(0).toUpperCase() + city.slice(1);
     const [loading, setLoading] = useState(false);
     const [allRestaurants, setAllRestaurants] = useState([]);
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
-
+    const navigate = useNavigate()
 
     useEffect(() => {
         const loadGoogleMapsScript = () => {
@@ -17,7 +17,7 @@ export default function Results({ message, apiKey, userLocation }) {
             script.defer = true;
             script.async = true;
             const onLoadCallback = () => {
-                initMap("ristorante", city, setAllRestaurants, setLoading);
+                initMap("ristorante", city, setAllRestaurants, setLoading, ottieniCoordinate);
             };
             script.onload = onLoadCallback;
             document.head.appendChild(script);
@@ -39,10 +39,24 @@ export default function Results({ message, apiKey, userLocation }) {
         applyFilter();
     }, [allRestaurants]);
 
+    async function ottieniCoordinate(city) {
+        let response = await fetch(`https://api.api-ninjas.com/v1/geocoding?city=${city}&country=Italy`, {
+            headers: { 'X-Api-Key': '7jkbvogD+tCGRtDELalkoA==SYGJEsL20SGNvIKZ' },
+            contentType: 'application/json'
+        })
+        let res = await response.json()
+        if (res.length > 0) {
+            return [res[0].latitude, res[0].longitude]
+        } else {
+            navigate('/')
+            setMessage("Inserisci il nome di una città valida")
+        }
+    }
+
     const handleFilterClick = (keyword) => {
         setLoading(true);
         setAllRestaurants([]);
-        initMap(keyword, city, setAllRestaurants, setLoading);
+        initMap(keyword, city, setAllRestaurants, setLoading, ottieniCoordinate);
     };
 
     return (
@@ -72,16 +86,7 @@ export default function Results({ message, apiKey, userLocation }) {
     );
 }
 
-async function ottieniCoordinate(city) {
-    let response = await fetch(`https://api.api-ninjas.com/v1/geocoding?city=${city}&country=Italy`, {
-        headers: { 'X-Api-Key': '7jkbvogD+tCGRtDELalkoA==SYGJEsL20SGNvIKZ' },
-        contentType: 'application/json'
-    })
-    let res = await response.json()
-    return [res[0].latitude, res[0].longitude]
-}
-
-async function initMap(keyword, city, setAllRestaurants, setLoading) {
+async function initMap(keyword, city, setAllRestaurants, setLoading, ottieniCoordinate) {
     setLoading(true)
 
     try {

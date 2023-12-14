@@ -633,12 +633,12 @@ form .form-inner input[type="submit"]:hover {
 }
 
 .error {
-  margin-top: 30px;
+  margin-top: 15px;
   margin-bottom: 10px;
   margin-left: 10px;
   color: red;
   text-align: center;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .form-inner p {
@@ -984,6 +984,27 @@ textarea {
   margin-bottom: 15px;
 }
 
+.rating-stars {
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.star {
+  color: rgb(95, 94, 94);
+  font-size: 23px;
+  padding: 20px;
+}
+
+.filled {
+  color: gold;
+}
+
+.review-stars {
+  display: flex;
+  margin-top: -30px;
+  justify-content: center;
+}
+
 .review-btn {
   font-family: inherit;
   border: none;
@@ -1266,6 +1287,24 @@ p i {
   text-align: center;
   margin-top: 400px;
   width: 470px;
+}
+
+.store-rating {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-content: center;
+  margin-top: -35px;
+}
+
+.free-delivery{
+  width: 350px;
+  margin-left: 65px;
+  line-height: 34px;
+}
+
+.delivery-fee {
+  font-size: 16px;
 }
 
 .menu {

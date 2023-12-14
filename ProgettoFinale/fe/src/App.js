@@ -163,14 +163,14 @@ function App() {
     <div className='container'>
       <Header user={user} logout={logout} setError={setError} setMessage={setMessage} />
       <Routes>
-        <Route path="/" element={<HomePage user={user} />} />
+        <Route path="/" element={<HomePage user={user} message={message} />} />
         <Route path="/ChiSiamo" element={<ChiSiamo />} />
         <Route path="/LavoraConNoi" element={<LavoraConNoi Signup={Signup} error={error} />} />
         <Route path="/Faq" element={<Faq />} />
         <Route path="/Profilo" element={<Profilo user={user} setUser={setUser} logout={logout} />} />
         <Route path="/Login" element={<LoginForm Login={Login} Signup={Signup} error={error} setError={setError} />} />
         <Route path="/:city/:restaurant" element={< StorePage user={user} setMessage={setMessage} shopCart={shopCart} setShopCart={setShopCart} apiKey={apiKey} />} />
-        <Route path="/:city" element={<Results message={message} apiKey={apiKey} userLocation={userLocation} />} />
+        <Route path="/:city" element={<Results message={message} setMessage={setMessage} apiKey={apiKey} userLocation={userLocation} />} />
         <Route path="/Termini&Condizioni" element={<TerminiCondizioni />} />
         <Route path="/Privacy" element={<Privacy />} />
       </Routes>

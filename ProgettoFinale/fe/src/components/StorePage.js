@@ -8,6 +8,8 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
     const [showMenu, setShowMenu] = useState(true);
     const [menuKeys, setMenuKeys] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
+    const [rating, setRating] = useState("")
+    const [deliveryFee, setDeliveryFee] = useState(true)
     const [mapSrc, setMapSrc] = useState("")
     const [msg, setMsg] = useState("")
     const navigate = useNavigate()
@@ -25,6 +27,9 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
                 setMenuKeys(Object.keys(res.menu))
                 let finalAddress = res.address.replaceAll(" ", "%20") + ",%20" + city + ", Italy"
                 setMapSrc(finalAddress)
+                const totalRating = res.reviews.reduce((sum, review) => sum + review.rating, 0)
+                const averageRating = (totalRating / res.reviews.length).toFixed(1)
+                setRating('⭐️'.repeat(averageRating))
             }
         }
         get()
@@ -33,7 +38,13 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
     useEffect(() => {
         if (shopCart[store.name] && shopCart[store.name].length > 0) {
             let newTotalPrice = shopCart[store.name].reduce((acc, curr) => acc + curr.price * curr.quantity, 0)
-            setTotalPrice(newTotalPrice.toFixed(2))
+            if (newTotalPrice > 9.99) {
+                setTotalPrice(newTotalPrice.toFixed(2))
+                setDeliveryFee(false)
+            } else {
+                setTotalPrice((newTotalPrice + 2.50).toFixed(2))
+                setDeliveryFee(true)
+            }
         } else {
             setTotalPrice(0)
         }
@@ -113,10 +124,19 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
                         <div className='arrow' onClick={() => navigate(`/${city}`)}></div>
                         <div className='store-box'>
                             <h1>{store.name}</h1>
-                            <span>{store.address}, {store.city}</span>
+                            <div className='store-rating'>
+                                <span>{rating}</span>
+                                <p>({store.reviews.length})</p>
+                            </div>
+                            <p className='free-delivery'>Ordina per un totale almeno di 10€ e non paghi la consegna!</p>
                         </div>
                         <div className='order-box'>
                             <h2>IL TUO ORDINE</h2>
+                            {deliveryFee ? <p className='delivery-fee'>
+                                Consegna: <strong> 2.50€ </strong>
+                            </p> : <p className='delivery-fee'>
+                                Consegna: <strong> GRATUITA </strong>
+                            </p>}
                             {shopCart[store.name] && shopCart[store.name].length > 0 ?
                                 <div>
                                     {shopCart[store.name].map(item =>
@@ -176,7 +196,7 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
                                                 <div className='menu-item' key={item.name} onClick={() => addToCart(item)}>
                                                     <p><strong>{item.name}</strong></p>
                                                     <p>{item.description}</p>
-                                                    <p>{item.price} €</p>
+                                                    <p>{item.price}€</p>
                                                 </div>
                                             ))}
                                         </div>
