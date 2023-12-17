@@ -188,7 +188,6 @@ app.put('/shops/:city/:shop/menu', verifyToken, async (req, res) => {
     const city = req.params.city
     const shop = req.params.shop
     const item = req.body
-    console.log(item, shop, city)
     await updateItem({ email: shop, city: city }, item)
     res.status(200).json({ msg: 'Modified successfully' })
 })
