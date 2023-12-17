@@ -3,22 +3,22 @@ import dailySavings from '../img/daily-saving.svg'
 import cashback from '../img/cashback.svg'
 import tech from '../img/tech.svg'
 
-export default function LavoraConNoi({ Signup, error }) {
+export default function LavoraConNoi({ signup, error }) {
 
     const [details, setDetails] = useState({ type: "", name: "", city: "", address: "", email: "", password: "" })
 
     function handleSubmit() {
-        Signup(details)
+        signup(details)
     }
 
     return (
-        <div className='main'>
+        <div className='lavora-container'>
             <div className='bg_lavora'>
                 <div className="form-container">
                     <h2>Inizia subito</h2>
                     <label>Tipo di attività</label>
                     <select name="attivita" onChange={(e) => setDetails({ ...details, type: e.target.value })} required>
-                        <option value="">--Please choose an option--</option>
+                        <option value="">--Seleziona una categoria--</option>
                         <option value="store">Negozio</option>
                         <option value="restaurant">Ristorante</option>
                     </select>

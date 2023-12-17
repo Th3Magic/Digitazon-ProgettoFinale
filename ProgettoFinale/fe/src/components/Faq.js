@@ -8,13 +8,13 @@ export default function Faq() {
         { id: 3, question: 'Quanto costa la consegna?', answer: 'Il prezzo del servizio è ottimizzato in base alla distanza. Più è breve, meno costa. ' },
         { id: 4, question: 'Che cosa posso chiedere?', answer: "Ci puoi utilizzare per acquistare qualsiasi prodotto o inviare qualsiasi cosa velocemente in città. Vuoi che andiamo in farmacia per te? Vuoi comprare un paio di scarpe? Vuoi qualcosa da mangiare? Vuoi spedire un pacchetto? Vuoi inviare un mazzo di chiavi? Qualsiasi cosa tu desideri" },
         { id: 5, question: 'Quali sono i metodi di pagamento accettati?', answer: 'Attualmente accettiamo pagamenti tramite carta di credito e PayPal.' },
-        { id: 6, question: 'Non avevo ordinato questo. Come posso fare?', answer: "Che cosa è successo? Il prodotto non corrisponde alla descrizione fatta? Vorremmo saperlo per evitare situazioni di questo tipo in futuro. Scrivici e faremo il possibile per risolvere il problema. A prescindere da quanto precede, nel caso specifico degli ordini posti sulla Piattaforma attraverso il dropdown del prodotto McDonald's, il Cliente deve contattare direttamente noi." }
+        { id: 6, question: 'Non avevo ordinato questo. Come posso fare?', answer: "Che cosa è successo? Il prodotto non corrisponde alla descrizione fatta? Vorremmo saperlo per evitare situazioni di questo tipo in futuro. Scrivici e faremo il possibile per risolvere il problema. A prescindere da quanto precede, nel caso specifico degli ordini posti sulla Piattaforma attraverso il dropdown del prodotto, il Cliente deve contattare direttamente noi." }
     ];
 
-    const [openQuestion, setOpenQuestion] = useState(null);
+    const [openQuestion, setOpenQuestion] = useState(null)
 
     const toggleAnswer = (id) => {
-        setOpenQuestion(openQuestion === id ? null : id);
+        setOpenQuestion(openQuestion === id ? null : id)
     };
 
     return (

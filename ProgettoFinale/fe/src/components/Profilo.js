@@ -12,7 +12,7 @@ export default function Profilo({ user, setUser, logout }) {
         if (!user.name) {
             navigate('/Login')
         }
-    }, [])
+    }, [user.name])
 
 
     useEffect(() => {
@@ -45,11 +45,11 @@ export default function Profilo({ user, setUser, logout }) {
             get()
         }
 
-    }, []);
+    }, [])
 
     return (
         <div className='profile'>
-            {user.type ? <ShopProfile user={user} setUser={setUser} logout={logout} /> : <UserProfile user={user} logout={logout} />}
+            {user.type ? <ShopProfile user={user} setUser={setUser} logout={logout} /> : <UserProfile user={user} setUser={setUser} logout={logout} />}
         </div>
     )
 }

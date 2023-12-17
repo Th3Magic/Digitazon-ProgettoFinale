@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import ResultCard from './ResultCard';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import ResultCard from './ResultCard'
 
 export default function Results({ message, setMessage, apiKey, userLocation }) {
-    let { city } = useParams();
-    city = city.charAt(0).toUpperCase() + city.slice(1);
-    const [loading, setLoading] = useState(false);
-    const [allRestaurants, setAllRestaurants] = useState([]);
-    const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+    let { city } = useParams()
+    city = city.charAt(0).toUpperCase() + city.slice(1)
+    const [loading, setLoading] = useState(false)
+    const [allRestaurants, setAllRestaurants] = useState([])
+    const [filteredRestaurants, setFilteredRestaurants] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         const loadGoogleMapsScript = () => {
-            const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`;
-            script.defer = true;
-            script.async = true;
+            const script = document.createElement('script')
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initMap`
+            script.defer = true
+            script.async = true
             const onLoadCallback = () => {
-                initMap("ristorante", city, setAllRestaurants, setLoading, ottieniCoordinate);
+                initMap("ristorante", city, setAllRestaurants, setLoading, ottieniCoordinate)
             };
             script.onload = onLoadCallback;
-            document.head.appendChild(script);
+            document.head.appendChild(script)
         };
-        loadGoogleMapsScript();
-    }, [city]);
+        loadGoogleMapsScript()
+    }, [city])
 
     useEffect(() => {
         const applyFilter = (filterKeyword) => {
@@ -31,13 +31,13 @@ export default function Results({ message, setMessage, apiKey, userLocation }) {
                 setFilteredRestaurants(allRestaurants);
             } else {
                 const filtered = allRestaurants.filter((restaurant) => {
-                    return restaurant.name.toLowerCase().match(filterKeyword.toLowerCase());
-                });
-                setFilteredRestaurants(filtered);
+                    return restaurant.name.toLowerCase().match(filterKeyword.toLowerCase())
+                })
+                setFilteredRestaurants(filtered)
             }
         };
-        applyFilter();
-    }, [allRestaurants]);
+        applyFilter()
+    }, [allRestaurants])
 
     async function ottieniCoordinate(city) {
         let response = await fetch(`https://api.api-ninjas.com/v1/geocoding?city=${city}&country=Italy`, {
@@ -54,9 +54,10 @@ export default function Results({ message, setMessage, apiKey, userLocation }) {
     }
 
     const handleFilterClick = (keyword) => {
-        setLoading(true);
-        setAllRestaurants([]);
-        initMap(keyword, city, setAllRestaurants, setLoading, ottieniCoordinate);
+        setLoading(true)
+        setMessage("")
+        setAllRestaurants([])
+        initMap(keyword, city, setAllRestaurants, setLoading, ottieniCoordinate)
     };
 
     return (
@@ -83,7 +84,7 @@ export default function Results({ message, setMessage, apiKey, userLocation }) {
                 </ul>
             </div>
         </div>
-    );
+    )
 }
 
 async function initMap(keyword, city, setAllRestaurants, setLoading, ottieniCoordinate) {

@@ -1,23 +1,33 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router'
 
-export default function LoginForm({ Login, Signup, error, setError }) {
+export default function LoginForm({ user, login, signup, error, setError, success, setSuccess }) {
 
     const [isLogin, setIsLogin] = useState(true)
-    const [details, setDetails] = useState({ name: "", email: "", password: "", city: "", address: "" })
+    const [details, setDetails] = useState({ name: "", surname: "", email: "", password: "", city: "", address: "" })
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (user.name) {
+            navigate('/Profilo')
+        }
+    }, [user.name])
 
     function handleToggleForm() {
         setIsLogin(!isLogin)
         setError("")
+        setSuccess("")
     }
 
     const submitHandler = e => {
         e.preventDefault()
 
         if (isLogin) {
-            Login(details)
+            login(details)
         } else {
-            Signup(details)
-            setDetails({ name: "", email: "", password: "", city: "", address: "" })
+            signup(details)
+            setIsLogin(true)
+            setDetails({ name: "", surname: "", email: "", password: "", city: "", address: "" })
         }
     }
 
@@ -26,22 +36,28 @@ export default function LoginForm({ Login, Signup, error, setError }) {
             <form onSubmit={submitHandler}>
                 <div className='form-inner'>
                     <h2>{isLogin ? 'Login' : 'Signup'}</h2>
-                    {(error !== "") ? (<div className='error'>{error}</div>) : ""}
+                    {error && <span className='login-error'> {error}</span>}
+                    {success && <span className='login-success'> {success}</span>}
                     {!isLogin &&
                         <div>
                             <div className='form-group'>
-                                <label htmlFor="name">Nome:</label>
-                                <input type="text" name='name' id='name' onChange={e => setDetails({ ...details, name: e.target.value })} value={details.name} />
+                                <label htmlFor="name">Nome</label>
+                                <input type="text" name='name' onChange={e => setDetails({ ...details, name: e.target.value })} value={details.name} />
+                            </div>
+
+                            <div className='form-group'>
+                                <label htmlFor="name">Cognome</label>
+                                <input type="text" name='cognome' onChange={e => setDetails({ ...details, surname: e.target.value })} value={details.surname} />
                             </div>
 
                             <div className='form-group'>
                                 <label htmlFor="password">Città: </label>
-                                <input type="text" name='password' id='pass' onChange={e => setDetails({ ...details, city: e.target.value })} value={details.city} />
+                                <input type="text" name='password' placeholder="Es: Milano" onChange={e => setDetails({ ...details, city: e.target.value })} value={details.city} />
                             </div>
 
                             <div className='form-group'>
                                 <label htmlFor="password">Indirizzo: </label>
-                                <input type="text" name='password' id='pass' onChange={e => setDetails({ ...details, address: e.target.value })} value={details.address} />
+                                <input type="text" name='password' placeholder="Es: Via Corsico, 2" onChange={e => setDetails({ ...details, address: e.target.value })} value={details.address} />
                             </div>
 
                         </div>}

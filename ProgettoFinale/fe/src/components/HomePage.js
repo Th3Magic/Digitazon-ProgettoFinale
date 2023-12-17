@@ -1,6 +1,6 @@
 
-import SearchSection from './SearchSection';
-import Promos from './Promos';
+import SearchSection from './SearchSection'
+import Promos from './Promos'
 
 
 function HomePage({ user, message }) {
@@ -13,4 +13,4 @@ function HomePage({ user, message }) {
     );
 }
 
-export default HomePage;
+export default HomePage

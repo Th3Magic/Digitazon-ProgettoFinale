@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 
-export default function UserProfile({ user, logout }) {
-    const [selectedButton, setSelectedButton] = useState(null);
+export default function UserProfile({ user, setUser, logout }) {
+    const [selectedButton, setSelectedButton] = useState(null)
     const [modifiedName, setModifiedName] = useState(user.name)
-    const [modifiedPhone, setModifiedPhone] = useState("")
+    const [modifiedSurname, setModifiedSurname] = useState(user.surname)
+    const [modifiedPhone, setModifiedPhone] = useState(user.phone ? user.phone : "")
     const [preferences, setPreferences] = useState({});
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState("")
-    const [msg, setMsg] = useState("")
     const token = localStorage.getItem('jwtToken')
 
     useEffect(() => {
@@ -44,6 +44,7 @@ export default function UserProfile({ user, logout }) {
             headers: { 'Content-Type': 'application/json', Authorization: token },
             body: JSON.stringify({
                 name: modifiedName,
+                surname: modifiedSurname,
                 phone: modifiedPhone,
                 contacts: preferences
             })
@@ -53,6 +54,13 @@ export default function UserProfile({ user, logout }) {
         if (res.error) {
             console.log(res.msg)
         }
+
+        setUser({
+            ...user, name: modifiedName,
+            surname: modifiedSurname,
+            phone: modifiedPhone,
+            contacts: preferences
+        })
     }
 
     async function deleteUser() {
@@ -75,14 +83,17 @@ export default function UserProfile({ user, logout }) {
 
         let res = await fetch(`http://localhost:3001/orders/${orderId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', Authorization: token },
-            body: JSON.stringify({ [orderId]: review, name: user.name, rating })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ [orderId]: review, name: user.name, surname: user.surname, rating })
         })
         res = await res.json()
         if (res.error) {
             console.log(res.msg)
         } else {
-            setMsg(res.msg)
+            let newReviews = JSON.parse(JSON.stringify(user.reviews))
+            newReviews.push({ [orderId]: review, name: user.name, surname: user.surname, rating })
+            setUser({ ...user, reviews: newReviews })
+            setRating(0)
         }
     }
 
@@ -97,6 +108,8 @@ export default function UserProfile({ user, logout }) {
                         <div>
                             <h4>Nome</h4>
                             <input className="profile-input" type="text" placeholder={user.name} onChange={(e) => setModifiedName(e.target.value)} />
+                            <h4>Cognome</h4>
+                            <input className="profile-input" type="text" placeholder={user.surname} onChange={(e) => setModifiedSurname(e.target.value)} />
                             <h4>Email</h4>
                             <input className="profile-input" type="text" value={user.email} readOnly />
                             <h4>Cellulare</h4>
@@ -148,7 +161,7 @@ export default function UserProfile({ user, logout }) {
                                                     ))}
                                                 </div>
                                                 <button className='review-btn' onClick={() => addReview(order._id)}>Invia recensione</button>
-                                                {msg && <p>{msg}</p>}
+
                                             </div>}
                                     </div>
                                 )}</div> :
@@ -194,7 +207,10 @@ export default function UserProfile({ user, logout }) {
                         <button onClick={() => handleButtonClick(5)} className='profile-btn'>Elimina Account</button>
                     </li>
                     {selectedButton === 5 &&
-                        <button className="noselect" onClick={deleteUser}><span className="text">Elimina</span><span className="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+                        <div className='elimina'>
+                            <p>Se sei sicuro di voler eliminare l'account clicca sul bottone.</p>
+                            <button className="noselect" onClick={deleteUser}><span className="text">Elimina</span><span className="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+                        </div>
                     }
                 </ul>
             </div>

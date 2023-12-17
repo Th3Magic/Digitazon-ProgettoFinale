@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"
 
 export default function StorePage({ user, setMessage, shopCart, setShopCart, apiKey }) {
 
     const { city, restaurant } = useParams()
     const [store, setStore] = useState({})
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(true)
     const [menuKeys, setMenuKeys] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
     const [rating, setRating] = useState("")
     const [deliveryFee, setDeliveryFee] = useState(true)
     const [mapSrc, setMapSrc] = useState("")
     const [msg, setMsg] = useState("")
+    const [error, setError] = useState("")
     const navigate = useNavigate()
 
     useEffect(() => {
+        setMessage("")
         async function get() {
             let response = await fetch(`http://localhost:3001/shops/${city}/${restaurant}`)
             let res = await response.json()
@@ -27,13 +29,19 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
                 setMenuKeys(Object.keys(res.menu))
                 let finalAddress = res.address.replaceAll(" ", "%20") + ",%20" + city + ", Italy"
                 setMapSrc(finalAddress)
-                const totalRating = res.reviews.reduce((sum, review) => sum + review.rating, 0)
-                const averageRating = (totalRating / res.reviews.length).toFixed(1)
-                setRating('⭐️'.repeat(averageRating))
+                if (res.reviews.length > 0) {
+                    const totalRating = res.reviews.reduce((sum, review) => sum + review.rating, 0)
+                    const averageRating = (totalRating / res.reviews.length).toFixed(1)
+                    setRating('⭐️'.repeat(averageRating))
+                }
             }
         }
-        get()
-    }, [city, restaurant]);
+        if (user.type) {
+            navigate('/Profilo')
+        } else {
+            get()
+        }
+    }, [city, restaurant, user]);
 
     useEffect(() => {
         if (shopCart[store.name] && shopCart[store.name].length > 0) {
@@ -54,19 +62,20 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
         if (user.name) {
             setMsg("")
         }
+        setError("")
         let newCart = { ...shopCart }
         let cartKeys = Object.keys(shopCart)
-        if (cartKeys.length === 0) {
+        if (!newCart[store.name] || newCart[store.name].length === 0) {
             item["quantity"] = 1
             newCart[store.name] = [item]
-            setShopCart({ ...newCart })
+            setShopCart(newCart)
             return
         }
-
         let shopCartIndex = cartKeys.indexOf(store.name)
         if (shopCartIndex > -1) {
-            if (newCart[store.name].find(dupli => dupli.name === item.name)) {
-                item["quantity"] += 1
+            let itemIndex = newCart[store.name].indexOf(newCart[store.name].find(dupli => dupli.name === item.name))
+            if (itemIndex > -1) {
+                newCart[store.name][itemIndex].quantity += 1
             } else {
                 item["quantity"] = 1
                 newCart[store.name].push(item)
@@ -75,7 +84,8 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
             item["quantity"] = 1
             newCart[store.name] = [item]
         }
-        setShopCart({ ...newCart })
+        setShopCart(newCart)
+        localStorage.setItem('cart', JSON.stringify(newCart))
     }
 
     function removeOne(item) {
@@ -87,16 +97,22 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
             newCart[store.name].splice(itemIndex, 1)
         }
         setShopCart({ ...newCart })
+        localStorage.setItem('cart', JSON.stringify(newCart))
     }
 
     async function checkout() {
 
-        if (shopCart[store.name].length === 0) {
-            setMsg("Inserisci qualcosa prima di ordinare")
+        if (!shopCart[store.name] || shopCart[store.name].length === 0) {
+            setError("Inserisci qualcosa prima di ordinare")
             return
         }
 
         if (!user.name) {
+            return
+        }
+
+        if (user.city !== store.city) {
+            setError("Sei troppo distante. Cerca uno shop più vicino a te")
             return
         }
 
@@ -108,26 +124,28 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
         })
         let res = await response.json()
         if (res.error) {
-            setMsg(res.msg)
+            setError(res.msg)
         } else {
             setMsg("Ordine effettuato con successo")
         }
     }
 
-    console.log(mapSrc)
-
     return (
         <>
             {store && (
                 <div className='store-middle'>
-                    {store.name && <div className={`bg-${store.name.replaceAll(" ", "")}`}>
+                    {store.name && <div className={`bg-${store.name.replaceAll(/[' ]/g, "")}`}>
                         <div className='arrow' onClick={() => navigate(`/${city}`)}></div>
                         <div className='store-box'>
                             <h1>{store.name}</h1>
-                            <div className='store-rating'>
+                            {rating ? <div className='store-rating'>
                                 <span>{rating}</span>
                                 <p>({store.reviews.length})</p>
-                            </div>
+                            </div> :
+                                <div className='store-rating'>
+                                    <p className='no-reviews'> ★ ★ ★ ★ ★ </p>
+                                    <p>(N/A)</p>
+                                </div>}
                             <p className='free-delivery'>Ordina per un totale almeno di 10€ e non paghi la consegna!</p>
                         </div>
                         <div className='order-box'>
@@ -173,7 +191,8 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
                                 <span>Totale: {totalPrice} €</span>
                                 <button className='checkout' onClick={checkout}>Completa l'ordine</button>
                             </div>
-                            <div>{msg && <p className='msg'>{msg}</p>}</div>
+                            <div>{msg && <p className='login-success'>{msg}</p>}</div>
+                            <div>{error && <p className='error'>{error}</p>}</div>
                         </div>
                     </div>}
                     <div className='menu-info'>
@@ -192,20 +211,22 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
                                     {menuKeys.map(key =>
                                         <div>
                                             <h3>{key}</h3>
-                                            {store.menu[key].map(item => (
+                                            {store.menu[key].length > 0 ? <div>{store.menu[key].map(item => (
                                                 <div className='menu-item' key={item.name} onClick={() => addToCart(item)}>
                                                     <p><strong>{item.name}</strong></p>
                                                     <p>{item.description}</p>
                                                     <p>{item.price}€</p>
-                                                </div>
-                                            ))}
+                                                </div>))}
+                                            </div> : <div>
+                                                <p>Nessun piatto presente.</p>
+                                            </div>}
                                         </div>
                                     )}
                                 </div>
                             )
                         ) : (
                             <div className='info-menu'>
-                                <h2>DOVE SIAMO</h2>
+                                <h2 className='map'>DOVE SIAMO</h2>
                                 <div>
                                     <iframe
                                         width="550"
@@ -217,14 +238,17 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
                                         src={`https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${mapSrc}`}>
                                     </iframe>
                                 </div>
-                                <h2>RECENSIONI</h2>
-                                {store.reviews.length > 0 &&
+                                <h2 className='recensioni'>RECENSIONI</h2>
+                                {store.reviews.length > 0 ?
                                     <div>
                                         {store.reviews.map(review =>
                                             <div className='recensione'>
-                                                <span>Utente: {review.name}</span>
-                                                <p>{review[Object.keys(review)[0]]}</p>
+                                                <p>{review.name} <span>{'⭐️'.repeat(review.rating)}</span></p>
+                                                <span>{review[Object.keys(review)[0]]}</span>
                                             </div>)}
+                                    </div> :
+                                    <div>
+                                        <p>Nessuna recensione presente.</p>
                                     </div>}
                             </div>
                         )}
@@ -232,5 +256,5 @@ export default function StorePage({ user, setMessage, shopCart, setShopCart, api
                 </div>
             )}
         </>
-    );
+    )
 }

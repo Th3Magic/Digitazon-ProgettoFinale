@@ -38,9 +38,9 @@ export default function ChiSiamo() {
                 </div>
             </div>
             <div className='info'>
-                <quote><i>"Da quando sono su Just Eat il fatturato è cresciuto del 25%. Gli ordini a domicilio sono diventati sempre più importanti per il mio business."</i></quote>
+                <blockquote><i>"Da quando sono su Just Eat il fatturato è cresciuto del 25%. Gli ordini a domicilio sono diventati sempre più importanti per il mio business."</i></blockquote>
                 <p><i>Riccardo, Bench - Milano</i></p>
             </div>
         </div>
-    );
+    )
 }

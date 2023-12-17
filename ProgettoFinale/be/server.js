@@ -48,7 +48,7 @@ function fieldsNotCompiled(req, res, next) {
 }
 
 function verifyToken(req, res, next) {
-    const token = req.headers.authorization || req.cookies.token;
+    const token = req.headers.authorization
     if (!token) {
         return res.status(401).json({ error: true, msg: 'Unauthorized: Token not provided.' });
     }
@@ -58,19 +58,21 @@ function verifyToken(req, res, next) {
             return res.status(401).json({ error: true, msg: 'Unauthorized: Invalid token.' });
         }
 
+        const routeParam = req.params.user || req.params.shop;
+
+        if (routeParam !== decoded.email) {
+            return res.status(403).json({ error: true, msg: 'Forbidden: You do not have access to this resource.' });
+        }
+
         req.user = decoded;
-        next();
-    });
+        next()
+    })
 }
 
 app.use(cors({ origin: 'http://localhost:3000' }))
 
 app.get('/API-key', (req, res) => {
     res.json(process.env.API_KEY);
-})
-
-app.get('/user-info', verifyToken, (req, res) => {
-    res.json(req.user);
 })
 
 // Endpoint per la lista di tutti gli utenti registrati
@@ -89,6 +91,7 @@ app.post('/signup', fieldsNotCompiled, userAlreadyExists, async (req, res) => {
                 "Antipasti": [],
                 "Primi": [],
                 "Secondi": [],
+                "Fast Food": [],
                 "Dolci": [],
                 "Pizze": [],
                 "Bibite": []
@@ -107,15 +110,17 @@ app.post('/login', async (req, res) => {
     const user = await select("Users", { email: email, password: password })
     const shop = await select("Shops", { email: email, password: password })
     if (user) {
-        const token = jwt.sign({ name: user.name, email: user.email, city: user.city, address: user.address, orders: user.orders }, process.env.JWT_SECRET);
-        loggedInUsers.push({ ...user, token });
-        res.json({ msg: 'Login successful.', name: user.name, email: user.email, city: user.city, address: user.address, orders: user.orders, token: token });
+        const token = jwt.sign(user, process.env.JWT_SECRET)
+        loggedInUsers.push({ ...user, token })
+        let { password, ...filteredUser } = user
+        res.json({ msg: 'Login successful', ...filteredUser, token: token });
     } else if (shop) {
-        const token = jwt.sign({ name: shop.name, email: shop.email, city: shop.city, address: shop.address, orders: shop.orders, type: shop.type, menu: shop.menu }, process.env.JWT_SECRET);
+        const token = jwt.sign(shop, process.env.JWT_SECRET);
         loggedInUsers.push({ ...shop, token });
-        res.json({ msg: 'Login successful.', name: shop.name, email: shop.email, city: shop.city, address: shop.address, orders: shop.orders, type: shop.type, menu: shop.menu, token: token });
+        let { password, ...filteredShop } = shop
+        res.json({ msg: 'Login successful', ...filteredShop, token: token });
     } else {
-        res.status(400).json({ error: true, msg: 'Invalid credentials.' })
+        res.status(400).json({ error: true, msg: 'Invalid credentials' })
     }
 })
 
@@ -127,7 +132,7 @@ app.post('/logout', (req, res) => {
         loggedInUsers.splice(index, 1)
         res.json({ msg: 'Logout successful.' })
     } else {
-        res.status(400).json({ error: true, msg: 'User not found or not logged in.' })
+        res.status(400).json({ error: true, msg: 'User not logged in.' })
     }
 })
 
@@ -183,26 +188,38 @@ app.put('/shops/:city/:shop/menu', verifyToken, async (req, res) => {
     const city = req.params.city
     const shop = req.params.shop
     const item = req.body
+    console.log(item, shop, city)
     await updateItem({ email: shop, city: city }, item)
     res.status(200).json({ msg: 'Modified successfully' })
 })
 
 // Endpoint per l'inserimento di un ordine
-app.post('/orders/:city/:shop', verifyToken, async (req, res) => {
+app.post('/orders/:city/:shop', async (req, res) => {
     const city = req.params.city
     const shop = req.params.shop
     const order = req.body
     const date = getDate()
-    await updateOrder({ shop: shop, city: city, user: order.user }, { date: date, ...order })
-    res.status(200).json({ msg: 'Order added successfully' })
+    const loggedUser = loggedInUsers.find(user => user.email === order.user)
+    if (loggedUser) {
+        await updateOrder({ shop: shop, city: city, user: order.user }, { date: date, ...order })
+        res.status(200).json({ msg: 'Order added successfully' })
+    } else {
+        res.status(403).json({ error: true, msg: 'Forbidden: You do not have access to this resource.' })
+    }
 })
 
-// Endpoint per l'inserimento di una review'
-app.put('/orders/:order', verifyToken, async (req, res) => {
+// Endpoint per l'inserimento di una review
+app.put('/orders/:order', async (req, res) => {
     const orderId = req.params.order
     const review = req.body
-    await updateReview(orderId, review)
-    res.status(200).json({ msg: 'Review added successfully' })
+    const loggedUser = loggedInUsers.find(user => user.name === review.name && user.surname === review.surname)
+    if (loggedUser) {
+        await updateReview(orderId, review)
+        res.status(200).json({ msg: 'Review added successfully' })
+    } else {
+        res.status(400).json({ error: true, msg: 'Can not complete the requested operation' })
+    }
+
 })
 
 app.listen(process.env.SERVER_PORT, () => {

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom"
 
 export default function SearchSection({ user, message }) {
 
@@ -20,7 +20,7 @@ export default function SearchSection({ user, message }) {
             <div className="bg_home"></div>
             <div className='search-box'>
                 <h2> Il bello è prenderci gusto </h2>
-                <h3> Ordina ora dai negozi nella tua zona </h3>
+                <h3> Ordina ora dai ristoranti nella tua zona </h3>
                 <div className="search__container">
                     <input className="search__input" type="text" placeholder="Città" value={city} onChange={(e) => setCity(e.target.value)} />
                     <button className='search-btn' onClick={() => navigate(`/${city}`)}>

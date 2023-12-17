@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import Modal from 'react-modal';
+import Modal from 'react-modal'
 
-Modal.setAppElement('#root');
+Modal.setAppElement('#root')
 
 export default function ShopProfile({ user, setUser, logout }) {
-    const [selectedButton, setSelectedButton] = useState(null);
+    const [selectedButton, setSelectedButton] = useState(null)
     const [menu, setMenu] = useState([])
     const [modfiedName, setModifiedName] = useState("")
     const [modfiedDesc, setModifiedDesc] = useState("")
@@ -25,7 +25,7 @@ export default function ShopProfile({ user, setUser, logout }) {
         if (selectedButton === buttonId) {
             setSelectedButton(null)
         } else {
-            setSelectedButton(buttonId);
+            setSelectedButton(buttonId)
         }
     }
 
@@ -60,7 +60,7 @@ export default function ShopProfile({ user, setUser, logout }) {
         if (res.error) {
             console.log(res.msg)
         }
-        setUser({ menu: newMenu, ...user })
+        setUser({ ...user, menu: newMenu })
         setModifiedName("")
         setModifiedDesc("")
         setModifiedPrice("")
@@ -78,16 +78,16 @@ export default function ShopProfile({ user, setUser, logout }) {
         if (res.error) {
             console.log(res.msg)
         }
-        setUser({ menu: newMenu, ...user })
+        setUser({ ...user, menu: newMenu })
     }
 
     function handleAddToMenuClick(key) {
         setAddingCategory(key)
-        setAddToMenuDialogOpen(true);
+        setAddToMenuDialogOpen(true)
     };
 
     const closeAddToMenuDialog = () => {
-        setAddToMenuDialogOpen(false);
+        setAddToMenuDialogOpen(false)
     };
 
     async function addItemToMenu() {
@@ -186,7 +186,7 @@ export default function ShopProfile({ user, setUser, logout }) {
                                                 <br />
                                                 <br />
                                                 <button onClick={() => modifyItem(index, Object.keys(user.menu)[keyIndex])} className='menu-profile-btn'>Modifica</button>
-                                                <button onClick={() => deleteItem(index, Object.keys(user.menu)[index])} className='menu-profile-btn'>Elimina</button>
+                                                <button onClick={() => deleteItem(index, Object.keys(user.menu)[keyIndex])} className='menu-profile-btn'>Elimina</button>
                                             </div>
                                         </div>
                                     ))}
@@ -207,7 +207,7 @@ export default function ShopProfile({ user, setUser, logout }) {
                                 <br />
                                 <br />
                                 <button className="menu-profile-btn" onClick={addItemToMenu}>Aggiungi</button>
-                                <button className="menu-profile-btn" onClick={closeAddToMenuDialog}>Close Dialog</button>
+                                <button className="menu-profile-btn" onClick={closeAddToMenuDialog}>Chiudi</button>
                             </Modal>
                         </div>
                     )}
@@ -216,7 +216,10 @@ export default function ShopProfile({ user, setUser, logout }) {
                         <button onClick={() => handleButtonClick(4)} className='profile-btn'>Elimina Account</button>
                     </li>
                     {selectedButton === 4 &&
-                        <button className="noselect" onClick={deleteShop}><span className="text">Elimina</span><span className="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+                        <div className='elimina'>
+                            <p>Se sei sicuro di voler eliminare l'account clicca sul bottone.</p>
+                            <button className="noselect" onClick={deleteShop}><span className="text">Elimina</span><span className="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+                        </div>
                     }
                 </ul>
             </div>

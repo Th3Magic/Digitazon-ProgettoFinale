@@ -1,16 +1,17 @@
 import React from 'react'
 import logo from '../img/logo.png'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
-export default function Header({ user, logout, setError, setMessage }) {
+export default function Header({ user, logout, setError, setMessage, setSuccess }) {
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     function justEat() {
         if (!user.type) {
             navigate("/")
             setError("")
             setMessage("")
+            setSuccess("")
         }
     }
 
@@ -24,6 +25,7 @@ export default function Header({ user, logout, setError, setMessage }) {
                     navigate("/ChiSiamo")
                     setError("")
                     setMessage("")
+                    setSuccess("")
                 }
                 }>Chi Siamo</button>
                 {user.type ? <div className='empty'>
@@ -32,6 +34,7 @@ export default function Header({ user, logout, setError, setMessage }) {
                     navigate("/LavoraConNoi")
                     setError("")
                     setMessage("")
+                    setSuccess("")
                 }
                 }>Lavora con noi</button>}
                 {user.name ?
@@ -43,12 +46,14 @@ export default function Header({ user, logout, setError, setMessage }) {
                         navigate("/Login")
                         setError("")
                         setMessage("")
+                        setSuccess("")
                     }
                     }>Accedi</button>}
                 <button className='header-btn' onClick={() => {
                     navigate("/Faq")
                     setError("")
                     setMessage("")
+                    setSuccess("")
                 }
                 }>FAQ</button>
             </div>
